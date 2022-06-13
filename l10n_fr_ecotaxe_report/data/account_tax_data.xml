@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="sale_ecotaxe_account" model="account.tax.template">
+        <field name="chart_template_id" ref="l10n_fr.l10n_fr_pcg_chart_template"/>
+        <field name="name">Ecotaxe</field>
+        <field name="description">Ecotaxe</field>
+        <field name="sequence">4</field>
+        <field name="amount_type">code</field>
+        <field name="type_tax_use">sale</field>
+        <field name="include_base_amount">True</field>
+        <field name="is_base_affected">True</field>
+        <field name="tax_exigibility">on_invoice</field>
+        <field name="tax_group_id" ref="account.tax_group_taxes"/>
+        <field name="python_compute">result = quantity * round(product.ecotaxe_amount if product else 0, 2)</field>
+        <field name="python_applicable">result = True</field>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'plus_report_line_ids': [ref('l10n_fr.tax_report_01'), ref('l10n_fr.tax_report_08_base')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'plus_report_line_ids': [ref('l10n_fr.tax_report_08_taxe')],
+                'account_id': ref('l10n_fr.pcg_7088'),
+            }),
+        ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'minus_report_line_ids': [ref('l10n_fr.tax_report_01'), ref('l10n_fr.tax_report_08_base')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'minus_report_line_ids': [ref('l10n_fr.tax_report_08_taxe')],
+                'account_id': ref('l10n_fr.pcg_7088'),
+            }),
+        ]"/>
+    </record>
+
+    <record id="sale_ecotaxe_account_fr" model="account.tax">
+        <field name="name">Ecotaxe</field>
+        <field name="description">Ecotaxe</field>
+        <field name="sequence">4</field>
+        <field name="amount_type">code</field>
+        <field name="type_tax_use">sale</field>
+        <field name="include_base_amount">True</field>
+        <field name="is_base_affected">True</field>
+        <field name="tax_exigibility">on_invoice</field>
+        <field name="tax_group_id" ref="account.tax_group_taxes"/>
+        <field name="country_id" ref="base.fr"/>
+        <field name="python_compute">result = quantity * round(product.ecotaxe_amount if product else 0, 2)</field>
+        <field name="python_applicable">result = True</field>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_fr.pcg_7088'),
+            }),
+        ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_fr.pcg_7088'),
+            }),
+        ]"/>
+    </record>
+</odoo>

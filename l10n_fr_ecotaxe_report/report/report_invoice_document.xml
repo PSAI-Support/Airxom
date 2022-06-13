@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//th[@name='th_price_unit']" position="after">
+            <th name="th_ecotaxe">
+                Ecotaxe
+            </th>
+        </xpath>
+
+        <xpath expr="//td[@t-if='display_discount']" position="after">
+            <td>
+                <span t-field="line.product_id.ecotaxe_amount" t-options='{"widget": "monetary_widget"}'/>
+            </td>
+        </xpath>
+    </template>
+</odoo>
